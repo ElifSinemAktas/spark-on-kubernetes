@@ -30,7 +30,9 @@ scheduledsparkapplications.sparkoperator.k8s.io       2025-01-29T08:21:33Z
 sparkapplications.sparkoperator.k8s.io                2025-01-29T08:21:33Z
 ```
 
-Create service account where your pods will run
+Create service account where your pods will run. 
+(We defined this serviceaccount in SparkApplication (yaml file) driver configuration)
+
 ```bash
 kubectl create serviceaccount spark --namespace default
 ```
@@ -45,10 +47,13 @@ kubectl create clusterrolebinding spark-role-binding `
   --serviceaccount=default:spark
 ```
 
-How spark knows this serviceaccount, is the "spark" name default?
-
 ```bash
 kubectl apply -f spark-pi.yaml
+```
+
+Check the application
+```bash
+kubectl get sparkapplications 
 ```
 
 If you need to delete

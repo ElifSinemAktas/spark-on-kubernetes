@@ -8,7 +8,7 @@
 
 - Customizing spark-operator: https://www.kubeflow.org/docs/components/spark-operator/user-guide/customizing-spark-operator/
 
-- Kubeflow helm chart
+- Kubeflow helm chart : https://github.com/kubeflow/spark-operator/blob/master/charts/spark-operator-chart/values.yaml
 
 
 ## Comparison Table:
