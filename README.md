@@ -1,3 +1,8 @@
+## Architecture
+
+    ![image](https://github.com/user-attachments/assets/081b671b-a7cc-4949-a3d2-2c7d5e2a80d3)
+
+
 ## Resources:
 
 - Spark-submit VS Spark-operator: https://spot.io/blog/setting-up-managing-monitoring-spark-on-kubernetes/
@@ -13,6 +18,14 @@
 - Kubeflow helm chart : https://github.com/kubeflow/spark-operator/blob/master/charts/spark-operator-chart/values.yaml
 
 
+## Summary:
+
+- Spark Operator is a Kubernetes Controller designed to manage and run Spark applications.
+- It includes:
+  - Custom Resource Definition (CRDs): Defines new Kubernetes resources like SparkApplication and ScheduledSparkApplication. It allows   users to submit Spark Job declaratively.
+  - Controller Logic: Whatces for SparkApplication resources and manages their lifecycle.
+  - Spark Submit Management: The operator constructs and executes a spark-submit command inside the driver pod.
+    
 ## Comparison Table:
 
 | Feature                | YARN                              | Standalone                        | Kubernetes                         |
