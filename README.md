@@ -4,6 +4,8 @@
 
 - User guide: https://www.kubeflow.org/docs/components/spark-operator/user-guide/
 
+- Architecture: https://www.kubeflow.org/docs/components/spark-operator/overview/#architecture
+
 - Writing a spark application: https://www.kubeflow.org/docs/components/spark-operator/user-guide/writing-sparkapplication/
 
 - Customizing spark-operator: https://www.kubeflow.org/docs/components/spark-operator/user-guide/customizing-spark-operator/
