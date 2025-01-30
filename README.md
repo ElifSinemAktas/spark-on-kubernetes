@@ -17,6 +17,7 @@
 
 - Kubeflow helm chart : https://github.com/kubeflow/spark-operator/blob/master/charts/spark-operator-chart/values.yaml
 
+- Mounting a ConfigMap storing Hadoop Configuration Files: https://www.kubeflow.org/docs/components/spark-operator/user-guide/writing-sparkapplication/#mounting-a-configmap-storing-spark-configuration-files
 
 ## Summary:
 
