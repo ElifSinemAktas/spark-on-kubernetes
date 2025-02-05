@@ -1,31 +1,19 @@
 ## Architecture
 
-    ![image](https://github.com/user-attachments/assets/081b671b-a7cc-4949-a3d2-2c7d5e2a80d3)
+![image](./images/architecture-diagram.png)
 
-
-## Resources:
-
-- Spark-submit VS Spark-operator: https://spot.io/blog/setting-up-managing-monitoring-spark-on-kubernetes/
-
-- User guide: https://www.kubeflow.org/docs/components/spark-operator/user-guide/
-
-- Architecture: https://www.kubeflow.org/docs/components/spark-operator/overview/#architecture
-
-- Writing a spark application: https://www.kubeflow.org/docs/components/spark-operator/user-guide/writing-sparkapplication/
-
-- Customizing spark-operator: https://www.kubeflow.org/docs/components/spark-operator/user-guide/customizing-spark-operator/
-
-- Kubeflow helm chart : https://github.com/kubeflow/spark-operator/blob/master/charts/spark-operator-chart/values.yaml
-
-- Mounting a ConfigMap storing Hadoop Configuration Files: https://www.kubeflow.org/docs/components/spark-operator/user-guide/writing-sparkapplication/#mounting-a-configmap-storing-spark-configuration-files
 
 ## Summary:
 
-- Spark Operator is a Kubernetes Controller designed to manage and run Spark applications.
-- It includes:
-  - Custom Resource Definition (CRDs): Defines new Kubernetes resources like SparkApplication and ScheduledSparkApplication. It allows   users to submit Spark Job declaratively.
-  - Controller Logic: Whatces for SparkApplication resources and manages their lifecycle.
-  - Spark Submit Management: The operator constructs and executes a spark-submit command inside the driver pod.
+Spark Operator is a Kubernetes Controller designed to manage and run Spark applications.
+
+- A user uses the sparkctl (or kubectl) to create a SparkApplication object. 
+
+- The SparkApplication controller receives the object through a watcher from the API server, creates a submission carrying the spark-submit arguments, and sends the submission to the submission runner. 
+
+- The submission runner submits the application to run and creates the driver pod of the application. Upon starting, the driver pod creates the executor pods. 
+
+- While the application is running, the Spark pod monitor watches the pods of the application and sends status updates of the pods back to the controller, which then updates the status of the application accordingly.
     
 ## Comparison Table:
 
@@ -50,3 +38,20 @@ To improve Kubernetes fault tolerance, consider:
 - `restartPolicy: OnFailure` for drivers.
 - Using **checkpointing** in Spark Streaming.
 - **GitOps tools** (ArgoCD, Flux) to automatically restart failed jobs.
+
+
+## Resources:
+
+- Spark-submit VS Spark-operator: https://spot.io/blog/setting-up-managing-monitoring-spark-on-kubernetes/
+
+- User guide: https://www.kubeflow.org/docs/components/spark-operator/user-guide/
+
+- Architecture: https://www.kubeflow.org/docs/components/spark-operator/overview/#architecture
+
+- Writing a spark application: https://www.kubeflow.org/docs/components/spark-operator/user-guide/writing-sparkapplication/
+
+- Customizing spark-operator: https://www.kubeflow.org/docs/components/spark-operator/user-guide/customizing-spark-operator/
+
+- Kubeflow helm chart : https://github.com/kubeflow/spark-operator/blob/master/charts/spark-operator-chart/values.yaml
+
+- Mounting a ConfigMap storing Hadoop Configuration Files: https://www.kubeflow.org/docs/components/spark-operator/user-guide/writing-sparkapplication/#mounting-a-configmap-storing-spark-configuration-files
