@@ -25,20 +25,21 @@ spark.kubernetes.executor.limit.memory=6g
 ```
 
 ### 2.2. Node Selectors & Affinity
+
 ```yaml
 spark.kubernetes.node.selector.spark=true
 ```
+
 Label your nodes:
 ```bash
 kubectl label node <your-node-name> spark=true
 ```
 
 ### 2.3. Tolerations for Tainted Nodes
+
 ```yaml
 spark.kubernetes.tolerations="[{'key': 'spark', 'operator': 'Exists'}]"
 ```
-
----
 
 ## 3. Storage & Data Optimization
 

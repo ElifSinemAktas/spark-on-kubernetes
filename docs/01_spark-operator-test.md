@@ -1,14 +1,19 @@
 
+## Deploy Spark Operator
+
+Add spark-operator helm repository
 ```bash
 helm repo add spark-operator https://kubeflow.github.io/spark-operator
 helm repo update
 ```
 
+Install/deploy spark-operator
+
 ```bash
-helm install spark-operator spark-operator/spark-operator `
-  --namespace spark-operator `
-  --create-namespace `
-  --set sparkJobNamespace=default `
+helm install spark-operator spark-operator/spark-operator \
+  --namespace spark-operator \
+  --create-namespace \
+  --set sparkJobNamespace=default \
   --set webhook.enable=true
 ```
 
@@ -24,11 +29,18 @@ Check the Custom Resource Definitions (CRDs) to confirm installation
 ```bash
 kubectl get crds
 ```
-
 ```
+...
 scheduledsparkapplications.sparkoperator.k8s.io       2025-01-29T08:21:33Z
 sparkapplications.sparkoperator.k8s.io                2025-01-29T08:21:33Z
 ```
+
+Check the all resources of spark-operator
+```bash
+kubectl get all -n spark-operator
+```
+
+## Create service account, role and rolebinding
 
 Create service account where your pods will run. 
 (We defined this serviceaccount in SparkApplication (yaml file) driver configuration)
@@ -37,15 +49,23 @@ Create service account where your pods will run.
 kubectl create serviceaccount spark --namespace default
 ```
 
+### Role/Rolebinding-Option-1
+```bash
+kubectl create clusterrolebinding spark-role-binding --clusterrole=edit --serviceaccount=default:spark --namespace=default
+```
+### Role/Rolebinding-Option-2
+
+Create role with permissions
 ```bash
 kubectl apply -f spark-role.yaml
 ```
 
+Bind this role to 
 ```bash
-kubectl create clusterrolebinding spark-role-binding `
-  --clusterrole=spark-role `
-  --serviceaccount=default:spark
+kubectl apply -f spark-rolebinding.yaml
 ```
+
+## Deploy/Monitor/Delete application
 
 ```bash
 kubectl apply -f spark-pi.yaml
@@ -61,5 +81,9 @@ If you need to delete
 kubectl delete -f spark-pi.yaml
 ```
 
+If failed check controllers logs
+```bash
+kubectl logs spark-operator-controller-7d9dd879-djddw -n spark-operator
+```
 
 
