@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-history-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-history-server
+  template:
+    metadata:
+      labels:
+        app: spark-history-server
+    spec:
+      containers:
+        - name: spark-history-server
+          ## Apache official spark image
+          image: apache/spark:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              /opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer \
+              --properties-file /opt/spark/conf/spark-defaults.conf
+          ports:
+            - containerPort: 18080
+          volumeMounts:
+            - name: spark-logs
+              mountPath: /var/log/spark-events
+      volumes:
+        - name: spark-logs
+          persistentVolumeClaim:
+            claimName: spark-logs-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark-history-server
+spec:
+  selector:
+    app: spark-history-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 18080
+  type: NodePort  # Change to LoadBalancer or ClusterIP if needed
