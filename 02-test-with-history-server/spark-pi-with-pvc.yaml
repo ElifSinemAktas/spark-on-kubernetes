@@ -8,24 +8,23 @@ spec:
   mode: cluster
   ## Docker official image 
   ## (https://hub.docker.com/layers/library/spark/3.5.3/images/sha256-980d682bd4e1a89537c13cf1e555a32bef7b329f21a21dc99b9192c93e62c26e)
-  image: spark:3.5.3
+  image: apache/spark:latest
   imagePullPolicy: IfNotPresent
   mainClass: org.apache.spark.examples.SparkPi
-  mainApplicationFile: local:///opt/spark/examples/jars/spark-examples.jar
-  sparkVersion: "3.5.3"
+  mainApplicationFile: local:///opt/spark/examples/jars/spark-examples_2.12-3.5.4.jar
   ## The SparkApplication object will be garbage collected 
   ## if the current time is more than the .spec.timeToLiveSeconds since its termination.
   timeToLiveSeconds: 3600
   ## eventLog is enabled
   sparkConf:
     "spark.eventLog.enabled": "true"
-    "spark.eventLog.dir": "file:/opt/spark/logs"
-    "spark.jars.ivy": "/tmp/.ivy"
-  ## volume points to pvc we created
+    "spark.eventLog.dir": "file:/tmp"
+  ## hostPath is used for testing purposes. All pods are in the same node.
   volumes:
-    - name: spark-logs
-      persistentVolumeClaim:
-        claimName: spark-logs-pvc
+    - name: example-volume
+      hostPath:
+        path: /data # directory location on host
+        type: Directory # this field is optional
   restartPolicy:
     type: Never
   driver:
@@ -34,13 +33,13 @@ spec:
     memoryOverhead: 128m  
     serviceAccount: spark
     ## Mountpath for driver
+    ## Where will data be stored:
     volumeMounts:
-      - name: spark-logs
-        mountPath: /opt/spark/logs
-    ## securityContext (temporarily for test, "permission denied")
-    podSecurityContext:
-      fsGroup: 1000
-      runAsUser: 1000
+      - name: example-volume
+        mountPath: /tmp
+    # securityContext:
+    #   allowPrivilegeEscalation: false
+    #   runAsUser: 0
   executor:
     cores: 1
     memory: 512m
@@ -49,10 +48,10 @@ spec:
     serviceAccount: spark
     ## Mountpath for executor
     volumeMounts:
-      - name: spark-logs
-        mountPath: /opt/spark/logs
-    podSecurityContext:
-      fsGroup: 1000
-      runAsUser: 1000
+      - name: example-volume
+        mountPath: /tmp
+    # securityContext:
+    #   allowPrivilegeEscalation: false
+    #   runAsUser: 0
     
 

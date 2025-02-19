@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark-defaults-config
+data:
+  spark-defaults.conf: |
+    spark.history.fs.logDirectory file:/tmp

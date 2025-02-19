@@ -1,10 +1,25 @@
 ## Prerequisites
 
 - [Spark Operator](../README.md)
-- [Longhorn](https://github.com/ElifSinemAktas/experimental-devops-project/blob/main/deployment/docs/02_deploy_longhorn.md)
 - [ServiceAccount, ClusterRole and ClusterRoleBinding](../01-test-basic-app/README.md)
 
-### Create PVC
+
+### Create Storageclass
+
+
+
+### Create pv
+
+
+### Create pvc 
+
+
+### Deploy Spark History Server
+
+<!-- - [Longhorn](https://github.com/ElifSinemAktas/experimental-devops-project/blob/main/deployment/docs/02_deploy_longhorn.md) -->
+- 
+
+<!-- ### Create PVC
 
 Use pvc.yaml and create pvc with the following command
 
@@ -34,4 +49,4 @@ Output:
 ```
 NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                    STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
 pvc-29367f86-3318-4a44-8f0b-222ddc3af9d4   1Gi        RWO            Delete           Bound    default/spark-logs-pvc   longhorn       <unset>                          97s
-```
+``` -->
