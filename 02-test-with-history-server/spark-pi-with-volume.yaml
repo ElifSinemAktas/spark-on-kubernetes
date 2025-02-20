@@ -53,5 +53,3 @@ spec:
     # securityContext:
     #   allowPrivilegeEscalation: false
     #   runAsUser: 0
-    
-

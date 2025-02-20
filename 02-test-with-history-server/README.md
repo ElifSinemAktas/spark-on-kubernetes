@@ -4,49 +4,37 @@
 - [ServiceAccount, ClusterRole and ClusterRoleBinding](../01-test-basic-app/README.md)
 
 
-### Create Storageclass
+### Create ConfigMap for Spark History Server
 
-
-
-### Create pv
-
-
-### Create pvc 
-
-
-### Deploy Spark History Server
-
-<!-- - [Longhorn](https://github.com/ElifSinemAktas/experimental-devops-project/blob/main/deployment/docs/02_deploy_longhorn.md) -->
-- 
-
-<!-- ### Create PVC
-
-Use pvc.yaml and create pvc with the following command
+This configmap sets spark.history.fs.logDirectory as /tmp folder.
 
 ```bash
-kubectl apply -f pvc.yaml
+kubectl apply -f spark-conf-configmap.yaml
 ```
 
-Check persistentVolumeClaim
+### Create Spark History Server Deployment
+
+We defined volumes and volumeMounts to map log directory (/tmp folder) to hostPath (/data folder in worker node) we defined.
 
 ```bash
-kubectl get pvc
+kubectl apply -f spark-history-deployment.yaml
 ```
 
-Output:
+### Run sparkApplication
 
-```
-NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
-spark-logs-pvc   Bound    pvc-29367f86-3318-4a44-8f0b-222ddc3af9d4   1Gi        RWO            longhorn       <unset>                 4s
-```
+To expose history server's 18080 port
 
-Check persistentVolume
 ```bash
-kubectl get pv
+kubectl apply -f spark-pi-with-volume.yaml
 ```
 
-Output:
 ```
-NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                    STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
-pvc-29367f86-3318-4a44-8f0b-222ddc3af9d4   1Gi        RWO            Delete           Bound    default/spark-logs-pvc   longhorn       <unset>                          97s
-``` -->
+NAME                                    READY   STATUS              RESTARTS   AGE
+spark-history-server-546b8b85fb-4w9h6   1/1     Running             0          5h1m
+spark-pi-0259b6951e3af155-exec-1        0/1     ContainerCreating   0          0s
+spark-pi-with-pvc-driver                1/1     Running             0          4s
+```
+
+### Check spark history server UI
+
+![history-server](../images/history-server.png)
